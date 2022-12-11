@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PubSrcSystemMapper">
+
+    <resultMap type="PubSrcSystem" id="PubSrcSystemResult">
+        <result property="id"    column="id"    />
+        <result property="departId"    column="depart_id"    />
+        <result property="departName"    column="depart_name"    />
+        <result property="name"    column="name"    />
+        <result property="functionIntroduction"    column="function_introduction"    />
+        <result property="constructionCost"    column="construction_cost"    />
+        <result property="runCost"    column="run_cost"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="stopDate"    column="stop_date"    />
+        <result property="status"    column="status"    />
+        <result property="fundsProvide"    column="funds_provide"    />
+        <result property="businessOffice"    column="business_office"    />
+        <result property="businessPreson"    column="business_preson"    />
+        <result property="businessPhone"    column="business_phone"    />
+        <result property="sysPeploy"    column="sys_peploy"    />
+        <result property="sysDeploySelf"    column="sys_deploy_self"    />
+        <result property="networkEnv"    column="network_env"    />
+        <result property="networkEnvSelf"    column="network_env_self"    />
+        <result property="scopeapplyArea"    column="scopeapply_area"    />
+        <result property="scopeapplyUser"    column="scopeapply_user"    />
+        <result property="scopeapplyUserSelf"    column="scopeapply_user_self"    />
+        <result property="dataGeneration"    column="data_generation"    />
+        <result property="dataGenerationSelf"    column="data_generation_self"    />
+        <result property="dataUp"    column="data_up"    />
+        <result property="dbFormat"    column="db_format"    />
+        <result property="isoterDb"    column="isoter_db"    />
+        <result property="shareScope"    column="share_scope"    />
+        <result property="leavelPro"    column="leavel_pro"    />
+        <result property="sysDeveloper"    column="sys_developer"    />
+        <result property="companyPerson"    column="company_person"    />
+        <result property="companyPhone"    column="company_phone"    />
+        <result property="createuser"    column="createuser"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="updatetime"    column="updatetime"    />
+        <result property="ordernum"    column="ordernum"    />
+    </resultMap>
+
+
+    <sql id="selectPubSrcSystemVo">
+        select id, depart_id, depart_name, name, function_introduction, construction_cost, run_cost, start_date, stop_date, status, funds_provide, business_office, business_preson, business_phone, sys_peploy, sys_deploy_self, network_env, network_env_self, scopeapply_area, scopeapply_user, scopeapply_user_self, data_generation, data_generation_self, data_up, db_format, isoter_db, share_scope, leavel_pro, sys_developer, company_person, company_phone, createuser, createtime, updatetime, ordernum from pub_src_system
+    </sql>
+
+    <select id="selectPubSrcSystemList" parameterType="PubSrcSystem" resultMap="PubSrcSystemResult">
+        select s.id, s.depart_id, s.depart_name, s.name, s.function_introduction, s.construction_cost, s.run_cost, s.start_date, s.stop_date, s.status, s.funds_provide, s.business_office, s.business_preson, s.business_phone, s.sys_peploy, s.sys_deploy_self, s.network_env, s.network_env_self, s.scopeapply_area, s.scopeapply_user, s.scopeapply_user_self, s.data_generation, s.data_generation_self, s.data_up, s.db_format, s.isoter_db, s.share_scope, s.leavel_pro, s.sys_developer, s.company_person, s.company_phone, s.createuser, s.createtime, s.updatetime, s.ordernum from pub_src_system s
+        left join sys_dept d on s.depart_id = d.dept_id
+        <where>  
+            <if test="name != null  and name != ''"> and s.name like concat('%', #{name}, '%')</if>
+            <if test="departName != null  and departName != ''"> and s.depart_name like concat('%', #{departName}, '%')</if>
+            <if test="departId != null  and departId != ''"> and (s.depart_id = #{departId} OR s.depart_id IN (SELECT dept_id FROM sys_dept
+                WHERE parent_id = #{departId}
+                OR parent_id IN (
+                SELECT dept_id FROM sys_dept
+                WHERE parent_id = #{departId}
+                OR parent_id IN (
+                SELECT dept_id FROM sys_dept
+                WHERE parent_id = #{departId}
+                ))))</if>
+        </where>
+    </select>
+
+    <select id="selectPubSrcSystemByDepartId" parameterType="string" resultMap="PubSrcSystemResult">
+        <include refid="selectPubSrcSystemVo"/>
+        where depart_id = #{departId} OR depart_id IN (SELECT dept_id FROM sys_dept
+        WHERE parent_id = #{departId}
+        OR parent_id IN (
+        SELECT dept_id FROM sys_dept
+        WHERE parent_id = #{departId}
+        OR parent_id IN (
+        SELECT dept_id FROM sys_dept
+        WHERE parent_id = #{departId}
+        )))
+    </select>
+
+    <select id="selectPubSrcSystemById" parameterType="String" resultMap="PubSrcSystemResult">
+        <include refid="selectPubSrcSystemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPubSrcSystem" parameterType="PubSrcSystem">
+        insert into pub_src_system
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="departId != null">depart_id,</if>
+            <if test="departName != null">depart_name,</if>
+            <if test="name != null">name,</if>
+            <if test="functionIntroduction != null">function_introduction,</if>
+            <if test="constructionCost != null">construction_cost,</if>
+            <if test="runCost != null">run_cost,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="stopDate != null">stop_date,</if>
+            <if test="status != null">status,</if>
+            <if test="fundsProvide != null">funds_provide,</if>
+            <if test="businessOffice != null">business_office,</if>
+            <if test="businessPreson != null">business_preson,</if>
+            <if test="businessPhone != null">business_phone,</if>
+            <if test="sysPeploy != null">sys_peploy,</if>
+            <if test="sysDeploySelf != null">sys_deploy_self,</if>
+            <if test="networkEnv != null">network_env,</if>
+            <if test="networkEnvSelf != null">network_env_self,</if>
+            <if test="scopeapplyArea != null">scopeapply_area,</if>
+            <if test="scopeapplyUser != null">scopeapply_user,</if>
+            <if test="scopeapplyUserSelf != null">scopeapply_user_self,</if>
+            <if test="dataGeneration != null">data_generation,</if>
+            <if test="dataGenerationSelf != null">data_generation_self,</if>
+            <if test="dataUp != null">data_up,</if>
+            <if test="dbFormat != null">db_format,</if>
+            <if test="isoterDb != null">isoter_db,</if>
+            <if test="shareScope != null">share_scope,</if>
+            <if test="leavelPro != null">leavel_pro,</if>
+            <if test="sysDeveloper != null">sys_developer,</if>
+            <if test="companyPerson != null">company_person,</if>
+            <if test="companyPhone != null">company_phone,</if>
+            <if test="createuser != null">createuser,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="updatetime != null">updatetime,</if>
+            <if test="ordernum != null">ordernum,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="departId != null">#{departId},</if>
+            <if test="departName != null">#{departName},</if>
+            <if test="name != null">#{name},</if>
+            <if test="functionIntroduction != null">#{functionIntroduction},</if>
+            <if test="constructionCost != null">#{constructionCost},</if>
+            <if test="runCost != null">#{runCost},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="stopDate != null">#{stopDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="fundsProvide != null">#{fundsProvide},</if>
+            <if test="businessOffice != null">#{businessOffice},</if>
+            <if test="businessPreson != null">#{businessPreson},</if>
+            <if test="businessPhone != null">#{businessPhone},</if>
+            <if test="sysPeploy != null">#{sysPeploy},</if>
+            <if test="sysDeploySelf != null">#{sysDeploySelf},</if>
+            <if test="networkEnv != null">#{networkEnv},</if>
+            <if test="networkEnvSelf != null">#{networkEnvSelf},</if>
+            <if test="scopeapplyArea != null">#{scopeapplyArea},</if>
+            <if test="scopeapplyUser != null">#{scopeapplyUser},</if>
+            <if test="scopeapplyUserSelf != null">#{scopeapplyUserSelf},</if>
+            <if test="dataGeneration != null">#{dataGeneration},</if>
+            <if test="dataGenerationSelf != null">#{dataGenerationSelf},</if>
+            <if test="dataUp != null">#{dataUp},</if>
+            <if test="dbFormat != null">#{dbFormat},</if>
+            <if test="isoterDb != null">#{isoterDb},</if>
+            <if test="shareScope != null">#{shareScope},</if>
+            <if test="leavelPro != null">#{leavelPro},</if>
+            <if test="sysDeveloper != null">#{sysDeveloper},</if>
+            <if test="companyPerson != null">#{companyPerson},</if>
+            <if test="companyPhone != null">#{companyPhone},</if>
+            <if test="createuser != null">#{createuser},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="updatetime != null">#{updatetime},</if>
+            <if test="ordernum != null">#{ordernum},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePubSrcSystem" parameterType="PubSrcSystem">
+        update pub_src_system
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="departId != null">depart_id = #{departId},</if>
+            <if test="departName != null">depart_name = #{departName},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="functionIntroduction != null">function_introduction = #{functionIntroduction},</if>
+            <if test="constructionCost != null">construction_cost = #{constructionCost},</if>
+            <if test="runCost != null">run_cost = #{runCost},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="stopDate != null">stop_date = #{stopDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="fundsProvide != null">funds_provide = #{fundsProvide},</if>
+            <if test="businessOffice != null">business_office = #{businessOffice},</if>
+            <if test="businessPreson != null">business_preson = #{businessPreson},</if>
+            <if test="businessPhone != null">business_phone = #{businessPhone},</if>
+            <if test="sysPeploy != null">sys_peploy = #{sysPeploy},</if>
+            <if test="sysDeploySelf != null">sys_deploy_self = #{sysDeploySelf},</if>
+            <if test="networkEnv != null">network_env = #{networkEnv},</if>
+            <if test="networkEnvSelf != null">network_env_self = #{networkEnvSelf},</if>
+            <if test="scopeapplyArea != null">scopeapply_area = #{scopeapplyArea},</if>
+            <if test="scopeapplyUser != null">scopeapply_user = #{scopeapplyUser},</if>
+            <if test="scopeapplyUserSelf != null">scopeapply_user_self = #{scopeapplyUserSelf},</if>
+            <if test="dataGeneration != null">data_generation = #{dataGeneration},</if>
+            <if test="dataGenerationSelf != null">data_generation_self = #{dataGenerationSelf},</if>
+            <if test="dataUp != null">data_up = #{dataUp},</if>
+            <if test="dbFormat != null">db_format = #{dbFormat},</if>
+            <if test="isoterDb != null">isoter_db = #{isoterDb},</if>
+            <if test="shareScope != null">share_scope = #{shareScope},</if>
+            <if test="leavelPro != null">leavel_pro = #{leavelPro},</if>
+            <if test="sysDeveloper != null">sys_developer = #{sysDeveloper},</if>
+            <if test="companyPerson != null">company_person = #{companyPerson},</if>
+            <if test="companyPhone != null">company_phone = #{companyPhone},</if>
+            <if test="createuser != null">createuser = #{createuser},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="updatetime != null">updatetime = #{updatetime},</if>
+            <if test="ordernum != null">ordernum = #{ordernum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePubSrcSystemById" parameterType="String">
+        delete from pub_src_system where id = #{id}
+    </delete>
+
+    <delete id="deletePubSrcSystemByIds" parameterType="String">
+        delete from pub_src_system where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -61,6 +61,12 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!--雨花区数据资源管理-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>yhq-dm</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

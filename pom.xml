@@ -186,6 +186,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!--雨花区数据资源管理-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>yhq-dm</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -196,6 +203,7 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>yhq-dm</module>
     </modules>
     <packaging>pom</packaging>
 
